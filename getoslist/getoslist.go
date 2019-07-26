@@ -10,13 +10,20 @@ import (
 	"github.com/jackpal/gateway"
 )
 
+// Osdata types the JSON input from mount/Windows.json
+type Osdata struct {
+	OperatingSystems []struct {
+		Name     string `json:"Name"`
+		Location string `json:"Location"`
+	} `json:"Operating Systems"`
+}
+
 // GetOSList Returns the list of operating systems gathered from http /mount/Windows.json
-func GetOSList() map[string]string {
+func GetOSList() Osdata {
 	gw, _ := gateway.DiscoverGateway()
 	list := downloadOSList(getNextServer(gw.String()))
-	data := make(map[string]string)
+	data := Osdata{}
 	err := json.Unmarshal(list, &data)
-
 	if err != nil {
 		log.Fatal(err)
 		os.Exit(2)
