@@ -20,12 +20,14 @@ type osdata struct {
 }
 
 // PrintOSList prints the list of Operating Systems on to the console
-func PrintOSList() {
+func PrintOSList() int {
 	data := getOSList()
+	var index int
 	for _, element := range data.OperatingSystems {
-		fmt.Println(element.Name)
-		fmt.Println(element.Location)
+		index++
+		fmt.Printf("%d. %s\n", index, element.Name)
 	}
+	return index
 }
 
 // GetOSList Returns the list of operating systems gathered from http /mount/Windows.json
