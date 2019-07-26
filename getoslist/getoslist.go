@@ -2,6 +2,7 @@ package getoslist
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -11,18 +12,29 @@ import (
 )
 
 // Osdata types the JSON input from mount/Windows.json
-type Osdata struct {
+type osdata struct {
 	OperatingSystems []struct {
 		Name     string `json:"Name"`
 		Location string `json:"Location"`
 	} `json:"Operating Systems"`
 }
 
+// PrintOSList prints the list of Operating Systems on to the console
+func PrintOSList() int {
+	data := getOSList()
+	var index int
+	for _, element := range data.OperatingSystems {
+		index++
+		fmt.Printf("%d. %s\n", index, element.Name)
+	}
+	return index
+}
+
 // GetOSList Returns the list of operating systems gathered from http /mount/Windows.json
-func GetOSList() Osdata {
+func getOSList() osdata {
 	gw, _ := gateway.DiscoverGateway()
 	list := downloadOSList(getNextServer(gw.String()))
-	data := Osdata{}
+	data := osdata{}
 	err := json.Unmarshal(list, &data)
 	if err != nil {
 		log.Fatal(err)

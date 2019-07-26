@@ -8,6 +8,5 @@ import (
 
 func main() {
 	fmt.Println("Please choose an OS")
-	getoslist.GetOSList()
-
+	getoslist.PrintOSList()
 }
