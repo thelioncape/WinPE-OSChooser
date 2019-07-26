@@ -7,6 +7,10 @@ import (
 )
 
 func main() {
-	fmt.Println("Please choose an OS")
+	fmt.Println("Choose an OS")
 	getoslist.PrintOSList()
+	fmt.Print("Please enter your choice and then press enter: ")
+	var choice string
+	fmt.Scanf("%s", &choice)
+	fmt.Println("Booting option", choice)
 }
