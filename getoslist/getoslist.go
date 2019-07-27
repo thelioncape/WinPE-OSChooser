@@ -11,7 +11,6 @@ import (
 	"github.com/jackpal/gateway"
 )
 
-// Osdata types the JSON input from mount/Windows.json
 type osdata struct {
 	OperatingSystems []struct {
 		Name     string `json:"Name"`
@@ -30,7 +29,7 @@ func PrintOSList() int {
 	return index
 }
 
-// GetOSList Returns the list of operating systems gathered from http /mount/Windows.json
+// Returns the list of operating systems gathered from http /mount/Windows.json
 func getOSList() osdata {
 	gw, _ := gateway.DiscoverGateway()
 	list := downloadOSList(getNextServer(gw.String()))
