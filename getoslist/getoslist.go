@@ -12,7 +12,7 @@ import (
 )
 
 // Osdata types the JSON input from mount/Windows.json
-type osdata struct {
+type Osdata struct {
 	OperatingSystems []struct {
 		Name     string `json:"Name"`
 		Location string `json:"Location"`
@@ -20,21 +20,20 @@ type osdata struct {
 }
 
 // PrintOSList prints the list of Operating Systems on to the console
-func PrintOSList() int {
+func PrintOSList() Osdata {
 	data := getOSList()
-	var index int
+	var index uint8
 	for _, element := range data.OperatingSystems {
 		index++
 		fmt.Printf("%d. %s\n", index, element.Name)
 	}
-	return index
+	return data
 }
 
 // GetOSList Returns the list of operating systems gathered from http /mount/Windows.json
-func getOSList() osdata {
-	gw, _ := gateway.DiscoverGateway()
-	list := downloadOSList(getNextServer(gw.String()))
-	data := osdata{}
+func getOSList() Osdata {
+	list := downloadOSList(GetNextServer())
+	data := Osdata{}
 	err := json.Unmarshal(list, &data)
 	if err != nil {
 		log.Fatal(err)
@@ -44,10 +43,12 @@ func getOSList() osdata {
 	return data
 }
 
-func getNextServer(gw string) string {
-	gw = gw[:len(gw)-1]
-	gw = gw + "2"
-	return gw
+// GetNextServer displays the .2 of the current subnet assuming the gateway is .1
+func GetNextServer() string {
+	gw, _ := gateway.DiscoverGateway()
+	strgw := gw[:len(gw)-1].String()
+	strgw = strgw + "2"
+	return strgw
 }
 
 func downloadOSList(ns string) []byte {
